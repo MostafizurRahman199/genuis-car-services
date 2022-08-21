@@ -1,0 +1,27 @@
+.image{
+    
+}
+
+.service{
+    text-align: center;
+    border: 1px solid lightgray;
+    border-radius:5px;
+   padding: 10px;
+   margin: 10px;
+}
+
+.service-btn{
+    width: 180px;
+    height: 55px;
+    background-color: rgb(120, 52, 185);
+    color: white;
+    border-radius: 5px;
+    border: 0px;
+    padding: 5px;
+}
+
+.service-btn:hover{
+    background-color: rgb(90, 12, 163);
+    cursor: pointer;
+    box-shadow: 2px 2px 2px 2px rgb(231, 222, 239);
+}
