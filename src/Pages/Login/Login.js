@@ -1,32 +1,41 @@
 import React, { useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import {Link, useNavigate} from 'react-router-dom';
-
-
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import auth from "../../firebase.init";
 
 const Login = () => {
+  const emailRef = useRef("");
+  const passwordRef = useRef("");
+  const location = useLocation();
+  let from = location.state?.from?.pathname || "/";
 
-const emailRef = useRef('');
-const passwordRef = useRef('');
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
 
-const handleSubmit = event => {
-  event.preventDefault();
-  const email = emailRef.current.value;
-  const password = passwordRef.current.value;
-  
-  console.log(email, password);
-}
-const navigate = useNavigate();
 
-const navigateRegister = event =>{
-       navigate('/register');
-}
+  if(user){
+   navigate(from, {replace:true})
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+
+    signInWithEmailAndPassword(email, password);
+  };
+  const navigate = useNavigate();
+
+  const navigateRegister = (event) => {
+    navigate("/register");
+  };
 
   return (
-    <div className="container w-50 border border-primary rounded my-5 p-5 mx-auto" >
+    <div className="container w-50 border border-primary rounded my-5 p-5 mx-auto">
       <h2 className="text-primary text-center">Please Login</h2>
-      <Form onSubmit={handleSubmit} >
+      <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control ref={emailRef} type="email" placeholder="Enter email" />
@@ -37,7 +46,11 @@ const navigateRegister = event =>{
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control ref={passwordRef} type="password" placeholder="Password" />
+          <Form.Control
+            ref={passwordRef}
+            type="password"
+            placeholder="Password"
+          />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Check me out" />
@@ -46,7 +59,18 @@ const navigateRegister = event =>{
           Submit
         </Button>
       </Form>
-      <p>New to Genius Car <span className="text-danger"  onClick={navigateRegister}> <Link to='/register' className="pe-auto text-decoration-none text-danger">Please Register</Link></span></p>
+      <p>
+        New to Genius Car{" "}
+        <span className="text-danger" onClick={navigateRegister}>
+          {" "}
+          <Link
+            to="/register"
+            className="pe-auto text-decoration-none text-danger"
+          >
+            Please Register
+          </Link>
+        </span>
+      </p>
     </div>
   );
 };
